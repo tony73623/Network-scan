@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Set the list of IP addresses and corresponding ports to scan
+IP_LIST=(
+    "<IP> port1 port2 port3"
+    "<IP> port1 port2 port3"  
+)
+# Loop through the list of IP addresses and ports
+for IP in "${IP_LIST[@]}"
+do
+    # Split the IP and ports into separate variables
+    IP_ADDR=$(echo $IP | awk '{print $1}')
+    PORTS=$(echo $IP | awk '{$1=""; print $0}')
+
+    # Loop through the list of ports for the current IP address
+    for PORT in $PORTS
+    do
+        # Run testssl tool with the current IP address and port
+        echo "Scanning $IP_ADDR:$PORT ..."
+	# make sure testssl has been installed in your linux environment
+        testssl --html $IP_ADDR:$PORT
+    done
+done
